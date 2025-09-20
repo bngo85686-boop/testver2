@@ -1,44 +1,25 @@
 [build]
   command = "pnpm run build"
-  publish = "dist" # nếu build ra thư mục khác thì đổi lại (vd: "build")
+  publish = "dist"
 
-# ✅ Fix lỗi trắng tinh khi vào route con (SPA routing cho React Router)
+# ✅ SPA routing fix cho React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# ✅ Cache tối ưu cho static assets (js, css, ảnh, fonts)
+# ✅ Cache tối ưu cho assets
 [[headers]]
   for = "/*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-    Content-Encoding = "br"
 
 [[headers]]
   for = "/*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-    Content-Encoding = "br"
 
-[[headers]]
-  for = "/*.woff2"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.png"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.jpg"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# ✅ Không cache index.html để luôn lấy bản mới nhất khi bạn build lại
 [[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-    Content-Encoding = "gzip"
