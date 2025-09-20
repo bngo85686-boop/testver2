@@ -1,23 +1,25 @@
 [build]
   command = "pnpm run build"
-  publish = "dist" # nếu project build ra "build" thì đổi lại
+  publish = "dist" # nếu build ra thư mục khác thì đổi lại (vd: "build")
 
-# ✅ Redirect tất cả request về index.html (SPA routing)
+# ✅ Fix lỗi trắng tinh khi vào route con (SPA routing cho React Router)
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# ✅ Cache static assets (ảnh, js, css, fonts) trong 1 năm
+# ✅ Cache tối ưu cho static assets (js, css, ảnh, fonts)
 [[headers]]
   for = "/*.js"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Content-Encoding = "br"
 
 [[headers]]
   for = "/*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+    Content-Encoding = "br"
 
 [[headers]]
   for = "/*.woff2"
@@ -34,24 +36,9 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
-# ✅ Nhưng index.html thì không cache (để nhận code mới khi build lại)
+# ✅ Không cache index.html để luôn lấy bản mới nhất khi bạn build lại
 [[headers]]
   for = "/index.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-
-# ✅ Nén Brotli + Gzip để tải nhanh hơn
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Content-Encoding = "br"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Content-Encoding = "br"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
     Content-Encoding = "gzip"
