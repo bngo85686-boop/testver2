@@ -1,9 +1,57 @@
 [build]
-command = "pnpm build"
-publish = "dist"
-functions = "netlify/functions"
+  command = "pnpm run build"
+  publish = "dist" # nếu project build ra "build" thì đổi lại
 
+# ✅ Redirect tất cả request về index.html (SPA routing)
 [[redirects]]
-from = "/*"
-to = "/"
-status = 200
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ✅ Cache static assets (ảnh, js, css, fonts) trong 1 năm
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# ✅ Nhưng index.html thì không cache (để nhận code mới khi build lại)
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+# ✅ Nén Brotli + Gzip để tải nhanh hơn
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Encoding = "br"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Content-Encoding = "br"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Content-Encoding = "gzip"
